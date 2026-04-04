@@ -1,0 +1,53 @@
+%Below you'll find the Overleaf structure made to write the PhD dissertation "Fecal Nature - A study of prehistoric human activity in the Dovre mountains using faecal biomarker analysis" by Anastasia Bertheussen. 
+\documentclass[UKenglish, thumbmarks]{uiophdthesis} #The LaTeX template may be found here: https://www.overleaf.com/gallery/tagged/uio
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc, url}   \urlstyle{sf}
+\usepackage{babel, csquotes, graphicx, textcomp}
+\usepackage[nospace]{varioref}
+\usepackage[backend=biber,style=authoryear,maxcitenames=2, uniquelist=false, uniquename=false]{biblatex} #Added to be able to reference throughout the document. 
+\usepackage[hidelinks, hypertexnames=false]{hyperref}
+\usepackage{bookmark}
+\usepackage{soul} #A package added to be able to higlight sections during the writing process. 
+\usepackage{gensymb} #
+\usepackage{longtable} #A package added to have long tables. 
+\usepackage{siunitx} #A package added to be able to read numerical values in tables. 
+\usepackage{multirow} #A package added to be able to combine rows in tables. 
+\usepackage{array} #A package added to be able to position text. 
+
+
+\title{Fecal Nature}
+\subtitle{A prehistoric study}
+\author{Anastasia Bertheussen\\ \url{#add your email here}}
+
+\addbibresource{references.bib} #Add a biblatex file to your file and add it here. 
+
+\begin{document}
+\frontmatter{}
+\maketitle[
+    dept={Department of Archaeology, Conservation and History}
+]
+
+\begin{abstract}
+    Here I describe my thesis in an english abstract. 
+\end{abstract}
+\begin{xabstract}[Sammendrag]
+Here I describe my thesis in a norwegian abstract. 
+\end{xabstract}
+\tableofcontents{}
+\listoffigures{}
+\listoftables{}
+
+\begin{preface}
+Here I write my acknowledgements. 
+\end{preface}
+
+\mainmatter{}
+\chapter{1}
+\section
+(...)
+
+\backmatter{}
+
+\printbibliography{} #I edited this bibliography later and added it manually in. 
+\end{document}
+
