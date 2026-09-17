@@ -1,0 +1,88 @@
+Age-depth model:
+install.packages("rbacon")
+library("rbacon")
+#AS4
+AS4 <- Bacon("AS4", coredir = “file path”, depths=seq(0,300, by=0.5), ssize=20000)
+#AS3
+AS3 <- Bacon("AS3", coredir = “file path”, depths=seq(0,80, by=0.5), hiatus.depths = 47, hiatus.max = 6000, ssize=4000). 
+#AW19
+AW19 <- Bacon("AW19", coredir= “file path”, depths=seq(0,50, by=0.5))
+
+Pollen: 
+install.packages("rioja")
+install.packages("dplyr")
+library("dplyr")
+library("rioja")
+library("tibble")
+
+
+Coretxt <- read.table("NAME.txt", header = TRUE, stringsAsFactors = FALSE)
+Corepollen <- read.csv2("NAME.csv", dec = ",", header = TRUE, stringsAsFactors = FALSE)
+
+Corepollen <- Corepollen[1:5, ]
+Corecombi <- full_join(Coretxt, Corepollen)
+
+#remove columns that are not necessary
+Corecombi$min.95 <- NULL
+Corecombi$max.95 <- NULL
+Corecombi$mean <- NULL
+
+#The idea is to make two or three seperate graphs which will be combined in illustrator. 
+
+#remove all NAs within the dataset after combining depth with pollen
+Corecombi_2 <- na.omit(Corecombi)
+#Make sure everything is numeric
+str(Corecombi_2)
+
+Corecombi.sum <- colSums(Corecombi_2) #calculate column sums
+Corecombi_pollen <- corecombi_2[,which(Corecombi.sum >3.5)] #subset data
+
+#Create the y-axis based on the joining of the age-depth datings and the pollen
+
+#Isolate the median values
+median_values_core <- corecombi_2
+median_values_core <- median_values_core[-1]
+median_values_core <- median_values_core[-2:-99]
+
+#makeimportant columns numeric
+medianvalues_core <- lapply(median_values_core, function(median) as.numeric(median))
+#Check if they are numeric
+str(medianvalues_core)
+
+#remove depth and median from the primary dataframe
+corecombi_2$median <- NULL
+corecombi_2$depth <- NULL
+
+
+View(corecombi_2)
+
+
+#Bar plot colour scheme
+# Set up color vectors
+c.poly <- c(rep("darkgrey", 4), NA, rep("darkgrey", 4), NA, rep("darkgrey", 2), NA)
+c.line <- c(rep(NA, 4), "black", rep(NA, 4), "black", NA,NA,NA)
+c.bar  <- c(rep(NA, 12), "black")
+c.polyline <- c(rep("black", 4), NA, rep("black", 4), NA, rep("black", 2), NA)
+# Adjust plot dimensions and create the initial plot
+
+# Set up the layout
+layout(matrix(c(1, 1, 1), nrow = 3), heights = c(5, 5, 4))  # Adjust the heights as needed
+
+# Adjust plot dimensions and create the initial plot
+par(mar=c(10, 10, 10, 10))  # Adjust margin space as needed
+pol.plot <- strat.plot(corecombi_2, yvar = median_values_core$median, y.tks=median_values_core$median, y.rev=TRUE,
+                       plot.line=FALSE, plot.poly=FALSE, plot.bar=TRUE, col.bar=c.bar, lwd.bar=6,
+                       scale.percent=TRUE, xSpace=0.02, x.pc.lab=TRUE, x.pc.omit0=TRUE, las=2,
+                       srt.xlabel=30, y.axis=TRUE, cex.xlabel = 0.75)
+
+# Add line plot
+pol.plot <- strat.plot(corecombi_2, yvar=median_values_core$median, y.tks=median_values_core$median, y.rev=TRUE,
+                       plot.line=TRUE, plot.poly=FALSE, plot.bar=FALSE, col.line=c.line, lwd.line=2,
+                       scale.percent=TRUE, xSpace=0.02, x.pc.lab=TRUE, x.pc.omit0=TRUE, srt.xlabel=30,
+                       las=2, x.axis=FALSE, x.names=NA, y.axis=TRUE, add=TRUE, cex.xlabel = 0.75)
+
+# Add polygon plot
+pol.plot <- strat.plot(corecombi_2, yvar=median_values_core$median, y.tks=median_values_core$median, y.rev=TRUE,
+                       plot.line=FALSE, plot.poly=TRUE, plot.bar=TRUE, col.poly=c.poly, col.poly.line=c.polyline,
+                       col.bar=c.polyline, scale.percent=TRUE, xSpace=0.02, x.pc.lab=TRUE, x.pc.omit0=TRUE,
+                       srt.xlabel=30, las=2, x.axis=FALSE, x.names=NA, y.axis=TRUE, add=TRUE, cex.xlabel = 0.75)
